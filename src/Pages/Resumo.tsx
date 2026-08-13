@@ -1,43 +1,43 @@
-import React from "react";
+import GraficoVendas from "../Components/GraficoVendas";
 import { useData } from "../Context/DataContext";
 
 const Resumo = () => {
   const { data } = useData();
 
-  if (!data) return <p>Carregando...</p>;
+  if (data === null) return null;
   return (
     <section>
       <div className="resumo flex mb">
         <div className="box">
-          <h2 className="title">Vendas</h2>
+          <h2>Vendas</h2>
           <span>
             {data
-              .filter((item) => item.status !== "falha")
+              .filter((i) => i.status !== "falha")
               .reduce((acc, item) => acc + item.preco, 0)
-              .toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+              .toLocaleString("pt-br", { style: "currency", currency: "BRL" })}
           </span>
         </div>
         <div className="box">
-          <h2 className="title">Recebido</h2>
+          <h2>Recebido</h2>
           <span>
             {data
-              .filter((item) => item.status === "pago")
+              .filter((i) => i.status === "pago")
               .reduce((acc, item) => acc + item.preco, 0)
-              .toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+              .toLocaleString("pt-br", { style: "currency", currency: "BRL" })}
           </span>
         </div>
         <div className="box">
-          <h2 className="title">Processando</h2>
+          <h2>Processando</h2>
           <span>
             {data
-              .filter((item) => item.status === "processando")
+              .filter((i) => i.status === "processando")
               .reduce((acc, item) => acc + item.preco, 0)
-              .toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+              .toLocaleString("pt-br", { style: "currency", currency: "BRL" })}
           </span>
         </div>
       </div>
       <div className="box mb">
-        <h2 className="title">Gráficos</h2>
+        <GraficoVendas data={data} />
       </div>
     </section>
   );

@@ -1,25 +1,20 @@
-import React from "react";
-import type { IVenda } from "../Context/DataContext";
+import { NavLink } from "react-router-dom";
+import { IVenda } from "../Context/DataContext";
 
 const VendaItem = ({ venda }: { venda: IVenda }) => {
   return (
-    <li className="venda box">
+    <div className="venda box">
+      <NavLink to={`/vendas/${venda.id}`} style={{ fontFamily: "monospace" }}>
+        {venda.id}
+      </NavLink>
+      <div>{venda.nome}</div>
       <div>
-        <a href={venda.id} style={{ fontFamily: "monospace" }}>
-          {venda.id}
-        </a>
-      </div>
-      <div>
-        <strong>Produto:</strong> {venda.nome}
-      </div>
-      <div>
-        <strong>Preço:</strong> R${" "}
-        {venda.preco.toLocaleString("pt-BR", {
+        {venda.preco.toLocaleString("pt-br", {
           style: "currency",
           currency: "BRL",
         })}
       </div>
-    </li>
+    </div>
   );
 };
 

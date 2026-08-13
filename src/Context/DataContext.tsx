@@ -7,8 +7,8 @@ type IDataContext = {
   error: string | null;
   inicio: string;
   final: string;
-  setInicio: React.Dispatch<React.SetStateAction<string>>
-  setFinal: React.Dispatch<React.SetStateAction<string>>
+  setInicio: React.Dispatch<React.SetStateAction<string>>;
+  setFinal: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export type IVenda = {
@@ -26,31 +26,30 @@ const DataContext = React.createContext<IDataContext | null>(null);
 export const useData = () => {
   const context = React.useContext(DataContext);
   if (!context) throw new Error("useData precisa estar em DataContextProvider");
-
-  getDate();
-  
   return context;
 };
 
-function getDate() {
-  const today = new Date();
-  const todayString = today.toISOString().split("T")[0];
-  const thirtyDaysAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
-  const thirtyDaysAgoString = thirtyDaysAgo.toISOString().split("T")[0];
-
-  return { todayString, thirtyDaysAgoString };
+function getDate(n: number) {
+  const date = new Date();
+  date.setDate(date.getDate() - n);
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const yyyy = date.getFullYear();
+  return `${yyyy}-${mm}-${dd}`;
 }
 
 export const DataContextProvider = ({ children }: React.PropsWithChildren) => {
-  const [inicio, setInicio] = React.useState(getDate().thirtyDaysAgoString);
-  const [final, setFinal] = React.useState(getDate().todayString);
+  const [inicio, setInicio] = React.useState(getDate(14));
+  const [final, setFinal] = React.useState(getDate(0));
 
   const { data, loading, error } = useFetch<IVenda[]>(
     `https://data.origamid.dev/vendas/?inicio=${inicio}&final=${final}`,
   );
 
   return (
-    <DataContext.Provider value={{ data, loading, error, inicio, setInicio, final, setFinal }}>
+    <DataContext.Provider
+      value={{ data, loading, error, inicio, setInicio, final, setFinal }}
+    >
       {children}
     </DataContext.Provider>
   );
