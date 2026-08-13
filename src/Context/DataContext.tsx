@@ -11,7 +11,7 @@ type IDataContext = {
   setFinal: React.Dispatch<React.SetStateAction<string>>
 };
 
-type IVenda = {
+export type IVenda = {
   id: string;
   nome: string;
   preco: number;
@@ -26,15 +26,27 @@ const DataContext = React.createContext<IDataContext | null>(null);
 export const useData = () => {
   const context = React.useContext(DataContext);
   if (!context) throw new Error("useData precisa estar em DataContextProvider");
+
+  getDate();
+  
   return context;
 };
 
+function getDate() {
+  const today = new Date();
+  const todayString = today.toISOString().split("T")[0];
+  const thirtyDaysAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const thirtyDaysAgoString = thirtyDaysAgo.toISOString().split("T")[0];
+
+  return { todayString, thirtyDaysAgoString };
+}
+
 export const DataContextProvider = ({ children }: React.PropsWithChildren) => {
-  const [inicio, setInicio] = React.useState("");
-  const [final, setFinal] = React.useState("");
+  const [inicio, setInicio] = React.useState(getDate().thirtyDaysAgoString);
+  const [final, setFinal] = React.useState(getDate().todayString);
 
   const { data, loading, error } = useFetch<IVenda[]>(
-    "https://data.origamid.dev/vendas/",
+    `https://data.origamid.dev/vendas/?inicio=${inicio}&final=${final}`,
   );
 
   return (

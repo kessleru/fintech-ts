@@ -3,7 +3,7 @@ import DateInput from "./DateInput";
 import { useData } from "../Context/DataContext"
 
 const DateRange = () => {
-  const { inicio, setTnicio, final, setFinal } = useData();
+  const { inicio, setInicio, final, setFinal } = useData();
 
   return (
     <form className="box flex" onSubmit={(e) => e.preventDefault()}>
