@@ -3,13 +3,13 @@
 <img src="docs/banner.svg" alt="Fintech — dashboard de vendas em React + TypeScript" width="100%">
 
 <p>
-  <a href="https://kessleru.github.io/fintech-ts/"><img src="https://img.shields.io/badge/demo-ao%20vivo-a36af9?style=for-the-badge&logo=githubpages&logoColor=white" alt="Demo ao vivo"></a>
+  <a href="https://fintech-ts-seven.vercel.app/"><img src="https://img.shields.io/badge/demo-ao%20vivo-a36af9?style=for-the-badge&logo=vercel&logoColor=white" alt="Demo ao vivo"></a>
   <img src="https://img.shields.io/badge/React-18-463220?style=for-the-badge&logo=react&logoColor=white" alt="React 18">
   <img src="https://img.shields.io/badge/TypeScript-5-463220?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript 5">
   <img src="https://img.shields.io/badge/Vite-4-463220?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 4">
 </p>
 
-<p><b><a href="https://kessleru.github.io/fintech-ts/">→ Abrir a demo</a></b></p>
+<p><b><a href="https://fintech-ts-seven.vercel.app/">→ Abrir a demo</a></b></p>
 
 </div>
 
@@ -90,7 +90,7 @@ se reorganizam.
 | Rotas | [React Router 6](https://reactrouter.com) |
 | Gráficos | [Recharts 2](https://recharts.org) |
 | Estilo | CSS puro com *custom properties* |
-| Deploy | GitHub Actions → GitHub Pages |
+| Deploy | [Vercel](https://vercel.com) |
 
 Os dados vêm da API pública [`data.origamid.dev/vendas`](https://data.origamid.dev/vendas).
 
@@ -105,7 +105,7 @@ npm install
 npm run dev
 ```
 
-O Vite sobe em `http://localhost:5173/fintech-ts/`.
+O Vite sobe em `http://localhost:5173`.
 
 ### Scripts
 
@@ -147,16 +147,23 @@ src/
 
 ## Deploy
 
-O deploy é automático: todo push na `main` dispara
-[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), que roda o build e publica `dist/`
-no GitHub Pages.
+Hospedado na [Vercel](https://vercel.com), com deploy automático a cada push na `main`.
 
-Como o site é servido em um subcaminho (`/fintech-ts/`), três detalhes importam:
+A configuração padrão do Vite já serve o app na raiz do domínio, então não há `base` a definir.
+O único ajuste necessário é o de rotas: como este é um SPA, recarregar uma URL profunda como
+`/vendas/:id` faria a Vercel procurar um arquivo nesse caminho e devolver 404. O
+[`vercel.json`](vercel.json) redireciona tudo para o `index.html` e deixa o React Router resolver:
 
-- `vite.config.ts` define `base: '/fintech-ts/'`;
-- o `BrowserRouter` usa `basename={import.meta.env.BASE_URL}`;
-- o build copia `index.html` para `404.html`, para que rotas profundas como `/vendas/:id`
-  funcionem ao recarregar a página — o GitHub Pages não reescreve URLs de SPA sozinho.
+```json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+> [!NOTE]
+> Se um dia for publicar em um subcaminho (GitHub Pages, por exemplo), aí sim é preciso definir
+> `base: '/nome-do-repo/'` no `vite.config.ts` — e o `BrowserRouter` já acompanha, porque usa
+> `basename={import.meta.env.BASE_URL}`.
 
 ---
 
