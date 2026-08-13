@@ -2,7 +2,7 @@ import MesBtn from "./MesBtn";
 
 const Meses = () => {
   return (
-    <div className="flex">
+    <div className="meses">
       <MesBtn n={-3} />
       <MesBtn n={-2} />
       <MesBtn n={-1} />

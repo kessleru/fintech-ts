@@ -1,26 +1,8 @@
-import React from "react";
-
-const style: React.CSSProperties = {
-  border: "var(--gap-s) solid var(--color-2)",
-  borderRightColor: "var(--color-4)",
-  width: "var(--gap)",
-  height: "var(--gap)",
-  borderRadius: "50%",
-  animation: "spin 1s infinite",
-};
-
-const Loading = () => {
+const Loading = ({ texto = "Carregando..." }: { texto?: string }) => {
   return (
-    <div style={style}>
-      <style>
-        {`
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}
-      </style>
+    <div className="loading" role="status" aria-live="polite">
+      <div className="loading-spinner" />
+      <span>{texto}</span>
     </div>
   );
 };

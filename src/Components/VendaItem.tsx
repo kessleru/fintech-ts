@@ -1,20 +1,16 @@
 import { NavLink } from "react-router-dom";
 import { IVenda } from "../Context/DataContext";
+import { formatarPreco } from "../Helpers/format";
+import Status from "./Status";
 
 const VendaItem = ({ venda }: { venda: IVenda }) => {
   return (
-    <div className="venda box">
-      <NavLink to={`/vendas/${venda.id}`} style={{ fontFamily: "monospace" }}>
-        {venda.id}
-      </NavLink>
-      <div>{venda.nome}</div>
-      <div>
-        {venda.preco.toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL",
-        })}
-      </div>
-    </div>
+    <NavLink to={`/vendas/${venda.id}`} className="venda box">
+      <span className="venda-id">{venda.id}</span>
+      <span className="venda-nome">{venda.nome}</span>
+      <Status status={venda.status} />
+      <span className="venda-preco">{formatarPreco(venda.preco)}</span>
+    </NavLink>
   );
 };
 

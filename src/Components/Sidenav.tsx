@@ -7,47 +7,43 @@ import sair from "../assets/icons/sair.svg";
 import FintechSVG from "../assets/FintechSVG";
 import { NavLink } from "react-router-dom";
 
+const links = [
+  { to: "/", icone: resumo, texto: "Resumo", fim: true },
+  { to: "/vendas", icone: vendas, texto: "Vendas", fim: false },
+];
+
+const emBreve = [
+  { icone: webhooks, texto: "Webhooks" },
+  { icone: configuracoes, texto: "Configurações" },
+  { icone: contato, texto: "Contato" },
+  { icone: sair, texto: "Sair" },
+];
+
 const Sidenav = () => {
   return (
     <nav className="sidenav box bg-3">
       <FintechSVG title="Fintech Logo" />
       <ul>
-        <li>
-          <span>
-            <img src={resumo} alt="" />
-          </span>
-          <NavLink to="/">Resumo</NavLink>
-        </li>
-        <li>
-          <span>
-            <img src={vendas} alt="" />
-          </span>
-          <NavLink to="/vendas">Vendas</NavLink>
-        </li>
-        <li>
-          <span>
-            <img src={webhooks} alt="" />
-          </span>
-          <a>Webhooks</a>
-        </li>
-        <li>
-          <span>
-            <img src={configuracoes} alt="" />
-          </span>
-          <a>Configurações</a>
-        </li>
-        <li>
-          <span>
-            <img src={contato} alt="" />
-          </span>
-          <a>Contato</a>
-        </li>
-        <li>
-          <span>
-            <img src={sair} alt="" />
-          </span>
-          <a>Sair</a>
-        </li>
+        {links.map(({ to, icone, texto, fim }) => (
+          <li key={texto}>
+            <NavLink to={to} end={fim} className="sidenav-item">
+              <span>
+                <img src={icone} alt="" />
+              </span>
+              {texto}
+            </NavLink>
+          </li>
+        ))}
+        {emBreve.map(({ icone, texto }) => (
+          <li key={texto}>
+            <span className="sidenav-item" aria-disabled="true" title="Em breve">
+              <span>
+                <img src={icone} alt="" />
+              </span>
+              {texto}
+            </span>
+          </li>
+        ))}
       </ul>
     </nav>
   );
